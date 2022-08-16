@@ -7,10 +7,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 public class TgBotManager extends TelegramLongPollingBot {
@@ -137,9 +134,9 @@ public class TgBotManager extends TelegramLongPollingBot {
         BACK_BUTTON_MAP.put("Соединить ленту с другим устройством по Wi-Fi","Опции");
         BACK_BUTTON_MAP.put("Синхронизировать ленту с музыкой по Bluetooth","Опции");
 
-        BACK_BUTTON_MAP.put("Изменить цвет","Настроить освещение");
-        BACK_BUTTON_MAP.put("Задать набор цветов","Настроить освещение");
-        BACK_BUTTON_MAP.put("Выбрать анимацию ленты","Настроить освещение");
+        BACK_BUTTON_MAP.put("Изменить цвет","Опции");
+        BACK_BUTTON_MAP.put("Задать набор цветов","Опции");
+        BACK_BUTTON_MAP.put("Выбрать анимацию ленты","Опции");
 
         BACK_BUTTON_MAP.put("Подключиться","Опции");
         BACK_BUTTON_MAP.put("Синхронизировать","Опции");
@@ -249,12 +246,19 @@ public class TgBotManager extends TelegramLongPollingBot {
             String receivedText = update.getMessage().getText();
 
             //заполнение стека
-            if(!Objects.equals(receivedText, "Назад")){
+            if(!Objects.equals(receivedText, "Назад") && !Objects.equals(receivedText, "Подключиться")
+                    && !Objects.equals(receivedText, "Синхронизировать") && !Objects.equals(receivedText, "Изменить цвет")
+                    && !Objects.equals(receivedText, "Задать набор цветов")
+                    && !Objects.equals(receivedText, "Выбрать анимацию ленты")){
                 Main.lastTappedButton = receivedText;//это в теории можно убрать
                 Main.buttonsStack.push(Main.lastTappedButton);
             }
 
-            tgBotManager.sendMenuMessage(chatId, receivedText,Main.lastTappedButton);
+            try{
+                tgBotManager.sendMenuMessage(chatId, receivedText,Main.lastTappedButton);
+            }catch (EmptyStackException e){
+                tgBotManager.sendMenuMessage(chatId,"ВЫ ЕЩЕ НИКУДА НЕ НАЖИМАЛИ", "Начало");
+            }
 
             //endregion
         }
