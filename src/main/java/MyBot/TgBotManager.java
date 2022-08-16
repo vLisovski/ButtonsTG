@@ -144,9 +144,9 @@ public class TgBotManager extends TelegramLongPollingBot {
         BACK_BUTTON_MAP.put("Подключиться","Опции");
         BACK_BUTTON_MAP.put("Синхронизировать","Опции");
 
-        BACK_BUTTON_MAP.put("Посмотреть качество Wi-Fi соединения","Состояние устройства");
-        BACK_BUTTON_MAP.put("Посмотреть качество Bluetooth соединения","Состояние устройства");
-        BACK_BUTTON_MAP.put("Посмотреть уровень заряда батареи","Состояние устройства");
+        BACK_BUTTON_MAP.put("Посмотреть качество Wi-Fi соединения","Начало");
+        BACK_BUTTON_MAP.put("Посмотреть качество Bluetooth соединения","Начало");
+        BACK_BUTTON_MAP.put("Посмотреть уровень заряда батареи","Начало");
 
     }
 
@@ -248,15 +248,11 @@ public class TgBotManager extends TelegramLongPollingBot {
             String chatId = update.getMessage().getChatId().toString();
             String receivedText = update.getMessage().getText();
 
-
-
             //заполнение стека
             if(!Objects.equals(receivedText, "Назад")){
                 Main.lastTappedButton = receivedText;//это в теории можно убрать
                 Main.buttonsStack.push(Main.lastTappedButton);
             }
-
-
 
             tgBotManager.sendMenuMessage(chatId, receivedText,Main.lastTappedButton);
 
