@@ -187,22 +187,16 @@ public class TgBotManager extends TelegramLongPollingBot {
             case "Выбрать анимацию ленты":
                 return "Выбрана новая интересная анимация";
             default:
-                return keyboardKey;
+                return "Вы отправили: " + keyboardKey;
         }
     }
 
     private void sendMenuMessage(String chatId, String keyboardKey, String lastTappedButton) {
 //Назад
 
-
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
         message.setText(makeMenuAction(keyboardKey));
-
-
-
-
-
 
             //написано самим
         if(!Objects.equals(keyboardKey,"Назад")){
@@ -210,12 +204,6 @@ public class TgBotManager extends TelegramLongPollingBot {
         }else{
             message.setReplyMarkup(KEYBOARD_MAP.get(BACK_BUTTON_MAP.get(Main.buttonsStack.pop())));
         }
-
-
-
-
-
-
 
         try {
             this.execute(message); // Sending our message object to user
@@ -245,17 +233,17 @@ public class TgBotManager extends TelegramLongPollingBot {
             String chatId = update.getMessage().getChatId().toString();
             String receivedText = update.getMessage().getText();
 
-            //заполнение стека
-            if(!Objects.equals(receivedText, "Назад") && !Objects.equals(receivedText, "Подключиться")
+             if (!Objects.equals(receivedText, "Назад") && !Objects.equals(receivedText, "Подключиться")
                     && !Objects.equals(receivedText, "Синхронизировать") && !Objects.equals(receivedText, "Изменить цвет")
                     && !Objects.equals(receivedText, "Задать набор цветов")
-                    && !Objects.equals(receivedText, "Выбрать анимацию ленты")){
-                Main.lastTappedButton = receivedText;//это в теории можно убрать
-                Main.buttonsStack.push(Main.lastTappedButton);
-            }
+                    && !Objects.equals(receivedText, "Выбрать анимацию ленты")) {
+                 Main.lastTappedButton = receivedText;//это в теории можно убрать
+                 Main.buttonsStack.push(Main.lastTappedButton);
+             }
 
             try{
-                tgBotManager.sendMenuMessage(chatId, receivedText,Main.lastTappedButton);
+                tgBotManager.sendMenuMessage(chatId, receivedText, Main.lastTappedButton);
+
             }catch (EmptyStackException e){
                 tgBotManager.sendMenuMessage(chatId,"ВЫ ЕЩЕ НИКУДА НЕ НАЖИМАЛИ", "Начало");
             }
