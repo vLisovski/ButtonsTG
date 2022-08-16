@@ -146,6 +146,7 @@ public class TgBotManager extends TelegramLongPollingBot {
 
         BACK_BUTTON_MAP.put("Посмотреть качество Wi-Fi соединения","Состояние устройства");
         BACK_BUTTON_MAP.put("Посмотреть качество Bluetooth соединения","Состояние устройства");
+        BACK_BUTTON_MAP.put("Посмотреть уровень заряда батареи","Состояние устройства");
 
     }
 
