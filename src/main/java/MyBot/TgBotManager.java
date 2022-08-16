@@ -19,7 +19,7 @@ public class TgBotManager extends TelegramLongPollingBot {
     private final static HashMap<String, String> BACK_BUTTON_MAP = new HashMap<>();
 
     public static void initializeKeyboardMap() {
-
+        //region Начало
         List<KeyboardRow> keyboard = new ArrayList<>();
         KeyboardRow row = new KeyboardRow();
         row.add("Опции");
@@ -30,7 +30,7 @@ public class TgBotManager extends TelegramLongPollingBot {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setKeyboard(keyboard);
         KEYBOARD_MAP.put("Начало", replyKeyboardMarkup);
-
+//endregion
         //region Опции
         keyboard = new ArrayList<>();
         row = new KeyboardRow();
@@ -105,7 +105,6 @@ public class TgBotManager extends TelegramLongPollingBot {
         //endregion
 
         //endregion
-
         //region Состояние устройства
         keyboard = new ArrayList<>();
         row = new KeyboardRow();
@@ -141,6 +140,12 @@ public class TgBotManager extends TelegramLongPollingBot {
         BACK_BUTTON_MAP.put("Изменить цвет","Настроить освещение");
         BACK_BUTTON_MAP.put("Задать набор цветов","Настроить освещение");
         BACK_BUTTON_MAP.put("Выбрать анимацию ленты","Настроить освещение");
+
+        BACK_BUTTON_MAP.put("Подключиться","Опции");
+        BACK_BUTTON_MAP.put("Синхронизировать","Опции");
+
+        BACK_BUTTON_MAP.put("Посмотреть качество Wi-Fi соединения","Состояние устройства");
+        BACK_BUTTON_MAP.put("Посмотреть качество Bluetooth соединения","Состояние устройства");
 
     }
 
@@ -190,15 +195,29 @@ public class TgBotManager extends TelegramLongPollingBot {
 
     private void sendMenuMessage(String chatId, String keyboardKey, String lastTappedButton) {
 //Назад
+
+
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
         message.setText(makeMenuAction(keyboardKey));
+
+
+
+
+
+
+            //написано самим
         if(!Objects.equals(keyboardKey,"Назад")){
             message.setReplyMarkup(KEYBOARD_MAP.get(keyboardKey));
         }else{
-
             message.setReplyMarkup(KEYBOARD_MAP.get(BACK_BUTTON_MAP.get(Main.buttonsStack.pop())));
         }
+
+
+
+
+
+
 
         try {
             this.execute(message); // Sending our message object to user
@@ -227,10 +246,17 @@ public class TgBotManager extends TelegramLongPollingBot {
 
             String chatId = update.getMessage().getChatId().toString();
             String receivedText = update.getMessage().getText();
+
+
+
+            //заполнение стека
             if(!Objects.equals(receivedText, "Назад")){
-                Main.lastTappedButton = receivedText;
+                Main.lastTappedButton = receivedText;//это в теории можно убрать
                 Main.buttonsStack.push(Main.lastTappedButton);
             }
+
+
+
             tgBotManager.sendMenuMessage(chatId, receivedText,Main.lastTappedButton);
 
             //endregion
