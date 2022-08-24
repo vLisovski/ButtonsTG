@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.*;
 
 
-public class TgBotManager extends TelegramLongPollingBot {
+public class BotNovichek extends TelegramLongPollingBot {
 
     private final static HashMap<String, ReplyKeyboardMarkup> KEYBOARD_MAP = new HashMap<>();
     private final static HashMap<String, String> BACK_BUTTON_MAP = new HashMap<>();
@@ -162,24 +162,24 @@ public class TgBotManager extends TelegramLongPollingBot {
 
                 return "Ищем устройства...Найден компьютер";
             case "Подключиться":
-                Main.connectedByWiFi = true;
+              //  Main.connectedByWiFi = true;
                 return "Подключаемся к копьютеру...Успешно";
             case "Синхронизировать ленту с музыкой по Bluetooth":
 
                 return "Поиск устройства по Bluetooth...Найдена портативная колонка";
             case "Синхронизировать":
-                Main.connectedByBluetooth = true;
+              //  Main.connectedByBluetooth = true;
                 return "Устройства синхронизированы успешно";
             case "Посмотреть уровень заряда батареи":
                 return "67%";
             case "Посмотреть качество Bluetooth соединения":
-                if (Main.connectedByBluetooth) {
+
                     return "4 из 5";
-                } else return "Лента не подключена по Bluetooth";
+
             case "Посмотреть качество Wi-Fi соединения":
-                if (Main.connectedByWiFi) {
+
                     return "5 из 5";
-                } else return "Лента не подключена по Wi-Fi";
+
             case "Изменить цвет":
                 return "Установлен другой цвет";
             case "Задать набор цветов":
@@ -202,7 +202,7 @@ public class TgBotManager extends TelegramLongPollingBot {
         if(!Objects.equals(keyboardKey,"Назад")){
             message.setReplyMarkup(KEYBOARD_MAP.get(keyboardKey));
         }else{
-            message.setReplyMarkup(KEYBOARD_MAP.get(BACK_BUTTON_MAP.get(Main.buttonsStack.pop())));
+           // message.setReplyMarkup(KEYBOARD_MAP.get(BACK_BUTTON_MAP.get(Main.buttonsStack.pop())));
         }
 
         try {
@@ -226,7 +226,7 @@ public class TgBotManager extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
 
-        TgBotManager tgBotManager = new TgBotManager();
+        BotNovichek botNovichek = new BotNovichek();
 
         if (update.hasMessage() && update.getMessage().hasText()) {
 
@@ -237,16 +237,16 @@ public class TgBotManager extends TelegramLongPollingBot {
                     && !Objects.equals(receivedText, "Синхронизировать") && !Objects.equals(receivedText, "Изменить цвет")
                     && !Objects.equals(receivedText, "Задать набор цветов")
                     && !Objects.equals(receivedText, "Выбрать анимацию ленты")) {
-                 Main.lastTappedButton = receivedText;//это в теории можно убрать
-                 Main.buttonsStack.push(Main.lastTappedButton);
+               //  Main.lastTappedButton = receivedText;//это в теории можно убрать
+                // Main.buttonsStack.push(Main.lastTappedButton);
              }
 
-            try{
-                tgBotManager.sendMenuMessage(chatId, receivedText, Main.lastTappedButton);
+          //  try{
+             //   botNovichek.sendMenuMessage(chatId, receivedText, Main.lastTappedButton);
 
-            }catch (EmptyStackException e){
-                tgBotManager.sendMenuMessage(chatId,"ВЫ ЕЩЕ НИКУДА НЕ НАЖИМАЛИ", "Начало");
-            }
+          //  }catch (EmptyStackException e){
+                botNovichek.sendMenuMessage(chatId,"ВЫ ЕЩЕ НИКУДА НЕ НАЖИМАЛИ", "Начало");
+           // }
 
             //endregion
         }
